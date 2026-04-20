@@ -1,17 +1,87 @@
-class Paciente:
-    def __init__(self, cpf, nome, data_de_nascimento, peso, altura, sexo, plano_de_saude, rg, tipo_sanguineo, telefone, endereco, email, historico_hospitalar):
-        self.cpf = cpf
+####### O CODIGO AINDA ESTÁ INCOMPLETO!! #######
+####### apenas associando profissional e paciente #######
+
+class pessoa:
+    def __init__(self, nome, data_de_nascimento, telefone, email):
         self.nome = nome
         self.data_de_nascimento = data_de_nascimento
+        self.telefone = telefone
+        self.email = email
+
+##################################################################################################################################
+
+class Profissional(pessoa):
+    def __init__(self,nome, data_de_nascimento, telefone, email, especialidade, registro, data_rgs):
+        super().__init__(nome, data_de_nascimento, telefone, email)
+        self.especialidade = especialidade
+        self.registro = registro
+        self.data_rgs = data_rgs
+    
+    def info_dispn(self):
+        return f"Profissional: {self.nome}\nEspecialidade: {self.especialidade}\nTelefone: {self.telefone}\nEmail: {self.email}\nRegistro: {self.registro}\nData de Registro: {self.data_rgs}"
+
+
+class ProfissionalRepository:
+    def __init__(self):
+        self.profissionais = [] 
+
+    def adicionar_profissional(self, profissional):
+        self.profissionais.append(profissional)
+
+    def listar_profissionais(self):
+        for profissional in self.profissionais:
+            print(profissional.info_dispn())
+            print("--------------------")
+
+    def buscar_profissional_por_nome(self, nome):
+        for profissional in self.profissionais:
+            if profissional.nome == nome:
+                return profissional
+        return None
+
+    def atualizar_profissional(self, nome, novos_dados):
+        profissional = self.buscar_profissional_por_nome(nome)
+        if profissional:
+            for chave, valor in novos_dados.items():
+                if hasattr(profissional, chave):
+                    setattr(profissional, chave, valor)
+            return False
+        return True
+
+    def excluir_profissional(self, nome):
+        profissional = self.buscar_profissional_por_nome(nome)
+        if profissional:
+            self.profissionais.remove(profissional)
+            return False
+        return True
+
+
+ramon = Profissional("Ramon", 35, "87 4002-8922", "ramon@email.com", "Fisioterapeuta", "CRM 12345", "2020-01-01")
+dudu = Profissional("Dudu", 40, "87 9900-6969", "dudu@email.com", "Fisioterapeuta", "CRM 67890", "2018-06-01")
+
+repositorio = ProfissionalRepository()
+
+
+repositorio.adicionar_profissional(ramon)
+repositorio.adicionar_profissional(dudu)
+
+
+print("Lista inicial de profissionais:")
+repositorio.listar_profissionais()
+
+###################################################################################################################################
+
+class Paciente:
+    def __init__(self,cpf, nome, data_de_nascimento, telefone, email, peso, altura, sexo, plano_de_saude, rg, tipo_sanguineo, endereco, historico_hospitalar):
+        super().__init__(nome, data_de_nascimento, telefone, email)
+        self.cpf = cpf
         self.peso = peso
         self.altura = altura
         self.sexo = sexo
         self.plano_de_saude = plano_de_saude
         self.rg = rg
         self.tipo_sanguineo = tipo_sanguineo
-        self.telefone = telefone
         self.endereco = endereco
-        self.email = email
         self.historico_hospitalar = historico_hospitalar
     
     def __str__(self):
