@@ -1,9 +1,17 @@
 class Pagamento:
-    def __init__(self, forma_pagamento="", valor_pagar=90, parcelas=1):
+    def __init__(self, forma_pagamento="", valor_pagar=90, parcelas=1, Comparecimento = None):
         self.forma_pagamento = forma_pagamento
         self.valor_pagar = valor_pagar
         self.parcelas = parcelas
-        self.pagamento_cancelado = False  # Controla se o pagamento foi cancelado
+        self.pagamento_cancelado = False  # Controle de pagamento cancelado
+
+    def comparecimento():
+        escolha = int(input("O paciente compareceu? [1] Sim | [2] Não"))
+        if escolha == 1:
+            print("Continue o pagamento")
+        else:
+            print("Paciente não compareceu ao dia agendado!")
+
 
     # CRUD - CREATE
     def criar_pagamento(self, forma_pagamento, valor_pagar, parcelas):
@@ -16,7 +24,7 @@ class Pagamento:
     # CRUD - READ
     def exibir_pagamento(self):
         if self.pagamento_cancelado:
-            print("Pagamento foi cancelado. Não há detalhes disponíveis.")
+            print("Pagamento cancelado. Não há detalhes disponíveis.")
             return
         
         print("\nDetalhes do Pagamento")
@@ -48,7 +56,7 @@ class Pagamento:
         self.valor_pagar = 0
         self.parcelas = 1
         self.pagamento_cancelado = True
-        print("Pagamento cancelado. O paciente não compareceu.\n")
+        print("Pagamento cancelado com sucesso!\n")
 
     def escolher_pagamento(self):
         while True:
@@ -58,7 +66,7 @@ class Pagamento:
             print("\n============== Selecione uma opção ==============")
             print("[1] - Dinheiro  | [2] - Crédito")
             print("[3] - Débito    | [4] - Pix ")
-            print("[5] - Trocar forma de pagamento | [6] - Cancelar pagamento")
+            print("[5] - Cancelar pagamento(Apenas se cliente não apareceu ou errou a forma de pagamento)")
             print("============== ___________________ ==============\n")
 
             try:
@@ -67,29 +75,30 @@ class Pagamento:
 
                 if escolha == 1:
                     self.forma_pagamento = "Dinheiro"
+                    self.pagamento_cancelado = False
                     break
                 elif escolha == 2:
                     self.forma_pagamento = "Crédito"
                     self.escolher_parcelas()
+                    self.pagamento_cancelado = False
                     break
                 elif escolha == 3:
                     self.forma_pagamento = "Débito"
+                    self.pagamento_cancelado = False
                     break
                 elif escolha == 4:
                     self.forma_pagamento = "Pix"
+                    self.pagamento_cancelado = False
                     break
                 elif escolha == 5:
-                    print("Você escolheu trocar a forma de pagamento.")
-                    self.forma_pagamento = ""
-                    break
-                elif escolha == 6:
-                    print("Pagamento cancelado. O paciente não compareceu.")
+                    print("Pagamento cancelado. O paciente não compareceu ou errou a formaa de pagamento.")
+                    print("Se o caso for o segunda alternativa, por favor refaça o Pagamento!")
                     self.excluir_pagamento()
                     break
                 else:
                     print("Escolha inválida! Tente novamente.\n")
             except ValueError:
-                print("Entrada inválida! Digite um número entre 1 e 6.\n")
+                print("Entrada inválida! Digite um número entre 1 e 5.\n")
 
     def escolher_parcelas(self):
         while True:
@@ -106,7 +115,7 @@ class Pagamento:
 
     def gerar_fatura(self):
         if self.pagamento_cancelado:
-            print("Pagamento foi cancelado. Não é possível gerar a fatura.")
+            print("")
             return
         
         print("\n                  Fatura detalhada")
@@ -122,15 +131,16 @@ class Pagamento:
 
     def gerar_recibo(self):
         if self.pagamento_cancelado:
-            print("Pagamento foi cancelado. Não é possível gerar o recibo.")
+            print("")
             return
-        
+        5
         print("\n                Recibo de Pagamento")
         print("=" * 50)
         print(f"Importância de: R$ {self.valor_pagar:.2f}")
         print("Referente à consulta médica.")
         print(f"Forma de pagamento: {self.forma_pagamento}")
  
+
         if self.forma_pagamento == "Crédito":
             valor_parcela = self.valor_pagar / self.parcelas
             print(f"Parcelado em {self.parcelas}x de R$ {valor_parcela:.2f} sem juros")
@@ -138,30 +148,9 @@ class Pagamento:
         print("=" * 50)
 
 
-# Exemplo de uso
 
-# Criar um pagamento
-pagamento = Pagamento()
-pagamento.criar_pagamento("Crédito", 150, 3)
-
-# Exibir o pagamento
-pagamento.exibir_pagamento()
-
-# Escolher forma de pagamento
+pagamento = Pagamento(valor_pagar=90)
 pagamento.escolher_pagamento()
-
-# Exibir novamente após escolher
-pagamento.exibir_pagamento()
-
-# Gerar a fatura
-pagamento.gerar_fatura()
-
-# Gerar o recibo
-pagamento.gerar_recibo()
-
-# Cancelar o pagamento
-pagamento.excluir_pagamento()
-
-# Tentar gerar fatura e recibo após cancelamento
 pagamento.gerar_fatura()
 pagamento.gerar_recibo()
+pagamento.comparecimento()

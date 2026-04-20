@@ -5,6 +5,9 @@ class Pagamento:
         self.parcelas = parcelas
         self.pagamento_cancelado = False  
 
+
+class Pagamentorepositorio:
+    super __init__()
     # Criar
     def criar_pagamento(self, forma_pagamento, valor_pagar, parcelas):
         self.forma_pagamento = forma_pagamento
@@ -41,7 +44,7 @@ class Pagamento:
             if self.pagamento_cancelado:
                 break
 
-            compareceu = input("O paciente compareceu? (sim/não): ").strip().lower()
+            compareceu = input("O paciente compareceu? (sim/não): ").strip()
 
             if compareceu == "sim":
                 print("=" * 50)
@@ -127,11 +130,11 @@ class Pagamento:
         print("=" * 50)
 
 
-pagamento = Pagamento()
+pagamento = Pagamentorepositorio()
 
 pagamento.escolher_pagamento()
 
-if not pagamento.pagamento_cancelado:
+if not Pagamentorepositorio.pagamento_cancelado:
     pagamento.exibir_pagamento()
 
     pagamento.gerar_fatura()
